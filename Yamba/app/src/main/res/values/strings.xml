@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Yamba</string>
+    <string name="button_tweet">Tweet</string>
+    <string name="edit_status">What\'s going on?</string>
+    <string name="chars_left">140</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="api_root">API Root</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="settings_menu_title">Settings</string>
+    <string name="action_tweet_title">Tweet</string>
+    <string name="action_refresh_title">Refresh</string>
+</resources>
