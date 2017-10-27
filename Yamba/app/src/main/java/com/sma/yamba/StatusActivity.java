@@ -51,7 +51,8 @@ public class StatusActivity extends AppCompatActivity {
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             case R.id.action_tweet:
-                startActivity(new Intent("com.sma.yamba.tweet"));
+                //TODO Don't start a new activity if already in StatusActivity
+                startActivity(new Intent(this, StatusActivity.class));
                 return true;
 
             default:

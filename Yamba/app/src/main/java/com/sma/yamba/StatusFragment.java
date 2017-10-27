@@ -90,15 +90,35 @@ public class StatusFragment extends Fragment {
 
             String username = preferences.getString("username", "");
             String password = preferences.getString("password", "");
+            String apiRoot = preferences.getString("api_root", "");
+
+            Log.i(TAG, "Retrieved username as " + username);
+            Log.i(TAG, "Retrieved apiRoot as " + apiRoot);
+            //Log.d(TAG, "Retrieved password as " + password);
 
             if(TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
                 getActivity().startActivity(new Intent(getActivity(), SettingsActivity.class));
                 return "Username or password not set";
             }
 
-            YambaClient yambaClient = new YambaClient(username, password);
+            YambaClient yambaClient;
+
+            if(TextUtils.isEmpty(apiRoot)) {
+                yambaClient = new YambaClient(username, password);
+            } else {
+                yambaClient = new YambaClient(username, password, apiRoot);
+            }
+
+
             try {
                 yambaClient.postStatus(params[0]);
+                //Clear text
+                StatusFragment.this.getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        statusUpdate.setText("");
+                    }
+                });
                 return "Update posted!";
             } catch(YambaClientException e) {
                 return "Failed";
