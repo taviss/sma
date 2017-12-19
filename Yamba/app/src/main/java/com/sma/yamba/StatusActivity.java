@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.marakana.android.yamba.clientlib.YambaClient;
 import com.marakana.android.yamba.clientlib.YambaClientException;
+import com.sma.yamba.services.RefreshService;
 
 import static android.graphics.Color.GREEN;
 import static android.graphics.Color.RED;
@@ -50,9 +51,14 @@ public class StatusActivity extends AppCompatActivity {
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
+
             case R.id.action_tweet:
                 //TODO Don't start a new activity if already in StatusActivity
                 startActivity(new Intent(this, StatusActivity.class));
+                return true;
+
+            case R.id.action_refresh:
+                startService(new Intent(this, RefreshService.class));
                 return true;
 
             default:
