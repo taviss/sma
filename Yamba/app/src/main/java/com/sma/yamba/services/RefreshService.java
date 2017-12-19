@@ -2,8 +2,10 @@ package com.sma.yamba.services;
 
 import android.app.IntentService;
 import android.app.Service;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -15,6 +17,8 @@ import android.widget.Toast;
 
 import com.marakana.android.yamba.clientlib.YambaClient;
 import com.marakana.android.yamba.clientlib.YambaClientException;
+import com.sma.yamba.content.DbHelper;
+import com.sma.yamba.content.StatusContract;
 
 import java.util.List;
 
@@ -53,6 +57,11 @@ public class RefreshService extends IntentService {
 
         Log.d(TAG, "onStart");
 
+        DbHelper dbHelper = new DbHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
         YambaClient yambaClient;
 
         if(TextUtils.isEmpty(apiRoot)) {
@@ -64,6 +73,12 @@ public class RefreshService extends IntentService {
         try {
             List<YambaClient.Status> timeline = yambaClient.getTimeline(20);
             for(YambaClient.Status status : timeline) {
+                values.clear();
+                values.put(StatusContract.Column.ID, status.getId());
+                values.put(StatusContract.Column.USER, status.getUser());
+                values.put(StatusContract.Column.MESSAGE, status.getMessage());
+                values.put(StatusContract.Column.CREATED_AT, status.getCreatedAt().getTime());
+                db.insertWithOnConflict(StatusContract.TABLE, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                 Log.i(TAG, String.format("%s: %s", status.getUser(), status.getMessage()));
             }
         } catch(YambaClientException e) {
