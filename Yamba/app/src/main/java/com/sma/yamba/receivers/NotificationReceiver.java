@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.sma.yamba.MainActivity;
 
@@ -14,10 +15,13 @@ import com.sma.yamba.MainActivity;
  */
 
 public class NotificationReceiver extends BroadcastReceiver {
+    private static final String TAG = NotificationReceiver.class.getName();
     private static final int NOTIFICATION_ID = 42;
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.i(TAG, "onReceive");
+
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         int count = intent.getIntExtra("count", 0);
