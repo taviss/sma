@@ -9,7 +9,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.sma.yamba.content.StatusContract;
 import com.sma.yamba.services.RefreshService;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,7 +19,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        if(savedInstanceState == null) {
+            TimelineFragment timelineFragment = new TimelineFragment();
+            getFragmentManager().beginTransaction().add(
+                    android.R.id.content,
+                    timelineFragment,
+                    timelineFragment.getClass().getSimpleName()
+            ).commit();
+        }
 
     }
 
@@ -41,6 +51,12 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.action_refresh:
                 startService(new Intent(this, RefreshService.class));
+                return true;
+
+            case R.id.action_purge:
+                int rows = getContentResolver().delete(StatusContract.CONTENT_URI, null, null);
+                Toast.makeText(this, "Deleted " + rows + " rows",
+                        Toast.LENGTH_LONG).show();
                 return true;
 
             default:

@@ -14,4 +14,6 @@
     <string name="settings_menu_title">Settings</string>
     <string name="action_tweet_title">Tweet</string>
     <string name="action_refresh_title">Refresh</string>
+    <string name="action_purge_title">Purge</string>
+    <string name="title_activity_details">DetailsActivity</string>
 </resources>
