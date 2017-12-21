@@ -30,6 +30,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-
+        ((YambaApplication) getActivity().getApplication()).updateYambaClient();
+        //YambaApplicationHolder.getInstance().updateYambaClient();
     }
 }

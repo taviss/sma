@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.marakana.android.yamba.clientlib.YambaClient;
 import com.marakana.android.yamba.clientlib.YambaClientException;
+import com.sma.yamba.YambaApplication;
+import com.sma.yamba.YambaApplicationHolder;
 import com.sma.yamba.content.DbHelper;
 import com.sma.yamba.content.StatusContract;
 
@@ -38,35 +40,12 @@ public class RefreshService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        final String username = preferences.getString("username", "");
-        final String password = preferences.getString("password", "");
-        final String apiRoot = preferences.getString("api_root", "");
-
-        if(TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-            Handler mHandler = new Handler(getMainLooper());
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(getApplicationContext(), "Please update your username and password",
-                            Toast.LENGTH_LONG).show();
-                }
-            });
-
-            return;
-        }
-
         Log.d(TAG, "onStart");
 
         ContentValues values = new ContentValues();
 
-        YambaClient yambaClient;
-
-        if(TextUtils.isEmpty(apiRoot)) {
-            yambaClient = new YambaClient(username, password);
-        } else {
-            yambaClient = new YambaClient(username, password, apiRoot);
-        }
+        //YambaClient yambaClient = YambaApplicationHolder.getInstance().getYambaClient();
+        YambaClient yambaClient = ((YambaApplication) getApplication()).getYambaClient();
 
         try {
             List<YambaClient.Status> timeline = yambaClient.getTimeline(20);
